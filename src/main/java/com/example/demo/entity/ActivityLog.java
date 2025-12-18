@@ -2,11 +2,11 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
+import java.time.*;
 
 @Entity
 
-public class EmissionFactor {
+public class ActivityLog {
 
     @Id
 
@@ -14,25 +14,30 @@ public class EmissionFactor {
 
     private Long id;
 
-    @OneToOne
+    @ManyToOne
 
     private ActivityType activityType;
 
-    private Double factorValue;
+    @ManyToOne
 
-    private String unit;
+    private User user;
 
-    private LocalDateTime createdAt;
+    private Double quantity;
+
+    private LocalDate activityDate;
+
+    private LocalDateTime loggedAt;
+
+    private Double estimatedEmission;
 
     @PrePersist
 
     public void onCreate() {
 
-        this.createdAt = LocalDateTime.now();
+        this.loggedAt = LocalDateTime.now();
 
     }
 
     // getters and setters
 
 }
-
