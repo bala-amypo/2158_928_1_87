@@ -1,3 +1,7 @@
+package com.example.demo.entity;
+
+import jakarta.persistence.*;
+
 @Entity
 public class EmissionFactor {
 
@@ -8,13 +12,15 @@ public class EmissionFactor {
     @OneToOne
     private ActivityType activityType;
 
-    private Double factorValue;
+    private Double factor;
 
-    public void setActivityType(ActivityType activityType) {
-        this.activityType = activityType;
-    }
+    // getters & setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Double getFactorValue() {
-        return factorValue;
-    }
+    public ActivityType getActivityType() { return activityType; }
+    public void setActivityType(ActivityType activityType) { this.activityType = activityType; }
+
+    public Double getFactor() { return factor; }
+    public void setFactor(Double factor) { this.factor = factor; }
 }
