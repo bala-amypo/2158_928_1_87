@@ -1,7 +1,80 @@
+// package com.example.demo.entity;
+
+// import jakarta.persistence.*;
+// import java.time.LocalDate;
+
+// @Entity
+// public class ActivityLog {
+
+//     @Id
+//     @GeneratedValue(strategy = GenerationType.IDENTITY)
+//     private Long id;
+
+//     @ManyToOne
+//     private User user;
+
+//     @ManyToOne
+//     private ActivityType activityType;
+
+//     private Double quantity;
+
+//     private LocalDate activityDate;
+
+//     private Double emission;
+
+//     // ✅ GETTERS & SETTERS
+
+//     public Long getId() {
+//         return id;
+//     }
+
+//     public User getUser() {
+//         return user;
+//     }
+
+//     public void setUser(User user) {
+//         this.user = user;
+//     }
+
+//     public ActivityType getActivityType() {
+//         return activityType;
+//     }
+
+//     public void setActivityType(ActivityType activityType) {
+//         this.activityType = activityType;
+//     }
+
+//     public Double getQuantity() {
+//         return quantity;
+//     }
+
+//     public void setQuantity(Double quantity) {
+//         this.quantity = quantity;
+//     }
+
+//     public LocalDate getActivityDate() {
+//         return activityDate;
+//     }
+
+//     public void setActivityDate(LocalDate activityDate) {
+//         this.activityDate = activityDate;
+//     }
+
+//     public Double getEmission() {
+//         return emission;
+//     }
+
+//     public void setEmission(Double emission) {
+//         this.emission = emission;
+//     }
+// }
+
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
-import java.time.LocalDate;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
 public class ActivityLog {
@@ -10,61 +83,24 @@ public class ActivityLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private User user;
+    private double estimatedEmission;
 
-    @ManyToOne
-    private ActivityType activityType;
+    // other fields if needed
+    // private String activityName;
+    // private double quantity;
 
-    private Double quantity;
-
-    private LocalDate activityDate;
-
-    private Double emission;
-
-    // ✅ GETTERS & SETTERS
-
-    public Long getId() {
-        return id;
+    // Default constructor
+    public ActivityLog() {
     }
 
-    public User getUser() {
-        return user;
+    // Getter and Setter for estimatedEmission
+    public double getEstimatedEmission() {
+        return estimatedEmission;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setEstimatedEmission(double estimatedEmission) {
+        this.estimatedEmission = estimatedEmission;
     }
 
-    public ActivityType getActivityType() {
-        return activityType;
-    }
-
-    public void setActivityType(ActivityType activityType) {
-        this.activityType = activityType;
-    }
-
-    public Double getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Double quantity) {
-        this.quantity = quantity;
-    }
-
-    public LocalDate getActivityDate() {
-        return activityDate;
-    }
-
-    public void setActivityDate(LocalDate activityDate) {
-        this.activityDate = activityDate;
-    }
-
-    public Double getEmission() {
-        return emission;
-    }
-
-    public void setEmission(Double emission) {
-        this.emission = emission;
-    }
+    // Add other getters/setters for your fields if needed
 }
