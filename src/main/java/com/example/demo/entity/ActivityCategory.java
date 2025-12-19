@@ -1,3 +1,8 @@
+package com.example.demo.entity;
+
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
 @Entity
 public class ActivityCategory {
 
@@ -5,10 +10,8 @@ public class ActivityCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
     private String categoryName;
 
-    private String description;
     private LocalDateTime createdAt;
 
     @PrePersist
@@ -16,9 +19,5 @@ public class ActivityCategory {
         this.createdAt = LocalDateTime.now();
     }
 
-    public Long getId() { return id; }
-    public String getCategoryName() { return categoryName; }
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
+    // getters & setters
 }
