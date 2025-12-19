@@ -18,34 +18,18 @@ public class ActivityLog {
 
     private Double quantity;
 
-    private Double estimatedEmission;
-
     private LocalDate activityDate;
 
-    // ===== GETTERS & SETTERS =====
+    private Double estimatedEmission;   // ✅ REQUIRED FIELD
 
-    public Long getId() {
-        return id;
+    // ===== getters & setters =====
+
+    public Double getEstimatedEmission() {
+        return estimatedEmission;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public ActivityType getActivityType() {
-        return activityType;
-    }
-
-    public void setActivityType(ActivityType activityType) {
-        this.activityType = activityType;
+    public void setEstimatedEmission(Double estimatedEmission) {
+        this.estimatedEmission = estimatedEmission;
     }
 
     public Double getQuantity() {
@@ -56,19 +40,19 @@ public class ActivityLog {
         this.quantity = quantity;
     }
 
-    public Double getEstimatedEmission() {
-        return estimatedEmission;
-    }
-
-    public void setEstimatedEmission(Double estimatedEmission) {
-        this.estimatedEmission = estimatedEmission;
-    }
-
     public LocalDate getActivityDate() {
         return activityDate;
     }
 
     public void setActivityDate(LocalDate activityDate) {
         this.activityDate = activityDate;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
     }
 }
