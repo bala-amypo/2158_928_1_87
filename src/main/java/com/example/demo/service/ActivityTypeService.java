@@ -11,7 +11,9 @@ import com.example.demo.repository.*;
 import java.util.*;
 
 
+import org.springframework.stereotype.Service;
 
+@Service
 public class ActivityTypeService {
 
     private final ActivityTypeRepository typeRepo;
