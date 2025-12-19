@@ -10,15 +10,17 @@ public class ActivityLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double quantity;
-
-    private LocalDate activityDate;
-
     @ManyToOne
     private User user;
 
     @ManyToOne
     private ActivityType activityType;
+
+    private Double quantity;
+
+    private Double estimatedEmission;
+
+    private LocalDate activityDate;
 
     // ===== GETTERS & SETTERS =====
 
@@ -26,20 +28,8 @@ public class ActivityLog {
         return id;
     }
 
-    public Double getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Double quantity) {
-        this.quantity = quantity;
-    }
-
-    public LocalDate getActivityDate() {
-        return activityDate;
-    }
-
-    public void setActivityDate(LocalDate activityDate) {
-        this.activityDate = activityDate;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public User getUser() {
@@ -56,5 +46,29 @@ public class ActivityLog {
 
     public void setActivityType(ActivityType activityType) {
         this.activityType = activityType;
+    }
+
+    public Double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Double quantity) {
+        this.quantity = quantity;
+    }
+
+    public Double getEstimatedEmission() {
+        return estimatedEmission;
+    }
+
+    public void setEstimatedEmission(Double estimatedEmission) {
+        this.estimatedEmission = estimatedEmission;
+    }
+
+    public LocalDate getActivityDate() {
+        return activityDate;
+    }
+
+    public void setActivityDate(LocalDate activityDate) {
+        this.activityDate = activityDate;
     }
 }
