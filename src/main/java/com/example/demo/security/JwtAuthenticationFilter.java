@@ -21,7 +21,7 @@ public class JwtAuthenticationFilter extends GenericFilter {
     private final CustomUserDetailsService userDetailsService;
 
     public JwtAuthenticationFilter(JwtUtil jwtUtil,
-    )
+    
     CustomUserDetailsService uds) {
 
         this.jwtUtil = jwtUtil;
@@ -33,7 +33,7 @@ public class JwtAuthenticationFilter extends GenericFilter {
     @Override
 
     public void doFilter(ServletRequest req,
-    )
+    
     ServletResponse res,
 
     FilterChain chain)
