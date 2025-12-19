@@ -21,29 +21,15 @@ public class EmissionFactorService {
         this.typeRepo = typeRepo;
     }
 
-    public EmissionFactor create(Long typeId, EmissionFactor f) {
+    public EmissionFactor createFactor(Long typeId, EmissionFactor factor) {
         ActivityType type = typeRepo.findById(typeId)
                 .orElseThrow(() -> new RuntimeException("ActivityType not found"));
-        f.setActivityType(type);
-        return factorRepo.save(f);
+
+        factor.setActivityType(type);
+        return factorRepo.save(factor);
     }
 
     public List<EmissionFactor> getAllFactors() {
         return factorRepo.findAll();
-    }
-
-    public EmissionFactor getById(Long id) {
-        return factorRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("EmissionFactor not found"));
-    }
-
-    public EmissionFactor update(Long id, EmissionFactor f) {
-        EmissionFactor existing = getById(id);
-        existing.setFactorValue(f.getFactorValue());
-        return factorRepo.save(existing);
-    }
-
-    public void delete(Long id) {
-        factorRepo.deleteById(id);
     }
 }
