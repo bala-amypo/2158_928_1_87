@@ -9,23 +9,15 @@ public class EmissionFactor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Double factorValue;
+
     @OneToOne
     private ActivityType activityType;
 
-    private Double factorValue;
-
-    // ✅ GETTERS & SETTERS
+    // ===== GETTERS & SETTERS =====
 
     public Long getId() {
         return id;
-    }
-
-    public ActivityType getActivityType() {
-        return activityType;
-    }
-
-    public void setActivityType(ActivityType activityType) {
-        this.activityType = activityType;
     }
 
     public Double getFactorValue() {
@@ -34,5 +26,13 @@ public class EmissionFactor {
 
     public void setFactorValue(Double factorValue) {
         this.factorValue = factorValue;
+    }
+
+    public ActivityType getActivityType() {
+        return activityType;
+    }
+
+    public void setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
     }
 }
