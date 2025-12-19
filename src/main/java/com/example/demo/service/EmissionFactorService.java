@@ -32,4 +32,9 @@ public class EmissionFactorService {
     public List<EmissionFactor> getAllFactors() {
         return factorRepo.findAll();
     }
+    public EmissionFactor getFactor(Long id) {
+    return repo.findById(id)
+            .orElseThrow(() -> new RuntimeException("EmissionFactor not found"));
+}
+
 }
