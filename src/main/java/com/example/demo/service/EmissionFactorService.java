@@ -12,29 +12,16 @@ import com.example.demo.repository.EmissionFactorRepository;
 @Service
 public class EmissionFactorService {
 
-    private final EmissionFactorRepository factorRepo;
+    private final EmissionFactorRepository repo;
     private final ActivityTypeRepository typeRepo;
 
-    public EmissionFactorService(EmissionFactorRepository factorRepo,
-                                 ActivityTypeRepository typeRepo) {
-        this.factorRepo = factorRepo;
+    public EmissionFactorService(EmissionFactorRepository repo, ActivityTypeRepository typeRepo) {
+        this.repo = repo;
         this.typeRepo = typeRepo;
     }
 
-    public EmissionFactor createFactor(Long typeId, EmissionFactor factor) {
-        ActivityType type = typeRepo.findById(typeId)
-                .orElseThrow(() -> new RuntimeException("ActivityType not found"));
-
-        factor.setActivityType(type);
-        return factorRepo.save(factor);
+    public EmissionFactor createFactor(Long typeId, EmissionFactor f) {
+        // Use repo here
+        return repo.save(f);
     }
-
-    public List<EmissionFactor> getAllFactors() {
-        return factorRepo.findAll();
-    }
-    public EmissionFactor getFactor(Long id) {
-    return repo.findById(id)
-            .orElseThrow(() -> new RuntimeException("EmissionFactor not found"));
-}
-
 }
