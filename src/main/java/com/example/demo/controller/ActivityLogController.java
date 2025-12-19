@@ -29,7 +29,7 @@ public class ActivityLogController {
     @PostMapping("/{userId}/{typeId}")
 
     public ActivityLog log(@PathVariable Long userId,
-    )
+    
     @PathVariable Long typeId,
 
     @RequestBody ActivityLogRequest request) {
@@ -47,7 +47,7 @@ public class ActivityLogController {
     @GetMapping("/{userId}")
 
     public List<ActivityLog> getLogs(@PathVariable Long userId,
-    )
+    
     @RequestParam LocalDate start,
 
     @RequestParam LocalDate end) {
