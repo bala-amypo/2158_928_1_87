@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "activity_logs")
 public class ActivityLog {
 
     @Id
@@ -12,27 +11,21 @@ public class ActivityLog {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "activity_type_id")
     private ActivityType activityType;
 
     private Double quantity;
 
-    private Double totalEmission;
+    private LocalDate activityDate;
 
-    private LocalDate logDate;
+    private Double emission;
 
-    // ===== GETTERS & SETTERS =====
+    // ✅ GETTERS & SETTERS
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public User getUser() {
@@ -59,19 +52,19 @@ public class ActivityLog {
         this.quantity = quantity;
     }
 
-    public Double getTotalEmission() {
-        return totalEmission;
+    public LocalDate getActivityDate() {
+        return activityDate;
     }
 
-    public void setTotalEmission(Double totalEmission) {
-        this.totalEmission = totalEmission;
+    public void setActivityDate(LocalDate activityDate) {
+        this.activityDate = activityDate;
     }
 
-    public LocalDate getLogDate() {
-        return logDate;
+    public Double getEmission() {
+        return emission;
     }
 
-    public void setLogDate(LocalDate logDate) {
-        this.logDate = logDate;
+    public void setEmission(Double emission) {
+        this.emission = emission;
     }
 }

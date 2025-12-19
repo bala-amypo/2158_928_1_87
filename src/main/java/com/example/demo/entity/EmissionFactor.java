@@ -12,15 +12,27 @@ public class EmissionFactor {
     @OneToOne
     private ActivityType activityType;
 
-    private Double factor;
+    private Double factorValue;
 
-    // getters & setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    // ✅ GETTERS & SETTERS
 
-    public ActivityType getActivityType() { return activityType; }
-    public void setActivityType(ActivityType activityType) { this.activityType = activityType; }
+    public Long getId() {
+        return id;
+    }
 
-    public Double getFactor() { return factor; }
-    public void setFactor(Double factor) { this.factor = factor; }
+    public ActivityType getActivityType() {
+        return activityType;
+    }
+
+    public void setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
+    }
+
+    public Double getFactorValue() {
+        return factorValue;
+    }
+
+    public void setFactorValue(Double factorValue) {
+        this.factorValue = factorValue;
+    }
 }
