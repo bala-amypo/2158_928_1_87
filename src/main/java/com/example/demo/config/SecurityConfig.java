@@ -21,24 +21,32 @@ public class SecurityConfig {
         this.entryPoint = entryPoint;
     }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http)
-            throws Exception {
+   @Bean
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/users").permitAll()
-                .anyRequest().authenticated()
-            )
-            .exceptionHandling(ex -> ex
-                .authenticationEntryPoint(entryPoint)
-            );
+    http
+        .csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(auth -> auth
+            // ✅ Allow Swagger
+            .requestMatchers(
+                "/swagger-ui/**",
+                "/v3/api-docs/**",
+                "/swagger-ui.html"
+            ).permitAll()
 
-        http.addFilterBefore(jwtFilter,
-                UsernamePasswordAuthenticationFilter.class);
+            // ✅ Allow user creation
+            .requestMatchers("/users").permitAll()
 
-        return http.build();
-    }
+            // 🔒 Everything else secured
+            .anyRequest().authenticated()
+        );
+
+    http.addFilterBefore(jwtFilter,
+            UsernamePasswordAuthenticationFilter.class);
+
+    return http.build();
+}
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
