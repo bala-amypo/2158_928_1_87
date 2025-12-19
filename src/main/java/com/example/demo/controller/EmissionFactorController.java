@@ -25,7 +25,7 @@ public class EmissionFactorController {
     @PostMapping("/{typeId}")
 
     public EmissionFactor create(@PathVariable Long typeId,
-    )
+    
     @RequestBody EmissionFactor factor) {
 
         return service.createFactor(typeId, factor);

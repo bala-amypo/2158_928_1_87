@@ -25,7 +25,7 @@ public class ActivityTypeController {
     @PostMapping("/{categoryId}")
 
     public ActivityType create(@PathVariable Long categoryId,
-    )
+    
     @RequestBody ActivityType type) {
 
         return service.createType(categoryId, type);
