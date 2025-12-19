@@ -11,7 +11,9 @@ import com.example.demo.repository.ActivityCategoryRepository;
 import java.util.*;
 
 
+import org.springframework.stereotype.Service;
 
+@Service
 public class ActivityCategoryService {
 
     private final ActivityCategoryRepository repo;
