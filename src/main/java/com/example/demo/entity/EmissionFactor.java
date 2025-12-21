@@ -1,45 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-
-
-// @Entity
-// public class EmissionFactor {
-
-//     @Id
-//     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//     private Long id;
-
-//     private Double factorValue;
-
-//     @OneToOne
-//     private ActivityType activityType;
-
-//     // ===== GETTERS & SETTERS =====
-
-//     public Long getId() {
-//         return id;
-//     }
-
-//     public Double getFactorValue() {
-//         return factorValue;
-//     }
-
-//     public void setFactorValue(Double factorValue) {
-//         this.factorValue = factorValue;
-//     }
-
-//     public ActivityType getActivityType() {
-//         return activityType;
-//     }
-
-//     public void setActivityType(ActivityType activityType) {
-//         this.activityType = activityType;
-//     }
-//}
 
 @Entity
 public class EmissionFactor {
@@ -51,9 +13,32 @@ public class EmissionFactor {
     @NotNull(message = "Factor value is required")
     private Double factorValue;
 
-    @OneToOne
-    @NotNull(message = "Activity type must be provided")
+    @ManyToOne
     private ActivityType activityType;
 
-    // getters & setters
+    // ===== getters & setters =====
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Double getFactorValue() {
+        return factorValue;
+    }
+
+    public void setFactorValue(Double factorValue) {
+        this.factorValue = factorValue;
+    }
+
+    public ActivityType getActivityType() {
+        return activityType;
+    }
+
+    public void setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
+    }
 }
