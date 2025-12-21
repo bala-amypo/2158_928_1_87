@@ -9,3 +9,4 @@ public interface ActivityCategoryRepository extends JpaRepository<ActivityCatego
     boolean existsByCategoryName(String name);
 
 }
+
