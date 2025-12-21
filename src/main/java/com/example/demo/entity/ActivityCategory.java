@@ -1,9 +1,9 @@
-package com.example.demo.entity;
+// package com.example.demo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+// import jakarta.persistence.Entity;
+// import jakarta.persistence.GeneratedValue;
+// import jakarta.persistence.GenerationType;
+// import jakarta.persistence.Id;
 
 // @Entity
 // public class ActivityCategory {
@@ -38,16 +38,41 @@ import jakarta.persistence.Id;
 //     public void setCategoryName(String categoryName) {
 //         this.categoryName = categoryName;
 //     }
-//}
+// }
+
+// package com.example.demo.entity;
+
+// import jakarta.persistence.*;
+// import jakarta.validation.constraints.NotBlank;
+
+// import jakarta.validation.constraints.NotNull;
+// import jakarta.validation.constraints.Size;
+
+
+// @Entity
+// public class ActivityCategory {
+
+//     @Id
+//     @GeneratedValue(strategy = GenerationType.IDENTITY)
+//     private Long id;
+
+//     @NotBlank(message = "Category name must not be empty")
+//     private String categoryName;
+
+//     // getters & setters
+//     public Long getId() { return id; }
+//     public void setId(Long id) { this.id = id; }
+
+//     public String getCategoryName() { return categoryName; }
+//     public void setCategoryName(String categoryName) {
+//         this.categoryName = categoryName;
+//     }
+// }
 
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-
 
 @Entity
 public class ActivityCategory {
@@ -59,11 +84,20 @@ public class ActivityCategory {
     @NotBlank(message = "Category name must not be empty")
     private String categoryName;
 
-    // getters & setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    // ===== getters & setters =====
 
-    public String getCategoryName() { return categoryName; }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
