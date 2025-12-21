@@ -1,41 +1,36 @@
 package com.example.demo.security;
 
-import java.util.Collections;
-
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 
+import java.util.Collections;
+
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final UserRepository userRepo;
 
-    // Constructor injection ONLY
-    public CustomUserDetailsService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public CustomUserDetailsService(UserRepository userRepo) {
+        this.userRepo = userRepo;
     }
 
-    /**
-     * This method is called automatically by Spring Security
-     * when authenticating using username (email in our case)
-     */
     @Override
     public UserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException {
 
-        User user = userRepository.findByEmail(email)
+        User user = userRepo.findAll().stream()
+                .filter(u -> u.getEmail().equals(email))
+                .findFirst()
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found"));
 
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),
-                Collections.emptyList() // roles handled via JWT
+                Collections.emptyList()
         );
     }
 }
