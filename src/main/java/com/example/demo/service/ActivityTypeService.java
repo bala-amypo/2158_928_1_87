@@ -1,35 +1,43 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.ActivityCategory;
-import com.example.demo.entity.ActivityType;
-import com.example.demo.repository.ActivityCategoryRepository;
-import com.example.demo.repository.ActivityTypeRepository;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.example.demo.entity.ActivityCategory;
+import com.example.demo.entity.ActivityType;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.repository.ActivityCategoryRepository;
+import com.example.demo.repository.ActivityTypeRepository;
 
 @Service
 public class ActivityTypeService {
 
-    private final ActivityTypeRepository typeRepo;
-    private final ActivityCategoryRepository categoryRepo;
+    private final ActivityTypeRepository typeRepository;
+    private final ActivityCategoryRepository categoryRepository;
 
-    public ActivityTypeService(ActivityTypeRepository typeRepo,
-                               ActivityCategoryRepository categoryRepo) {
-        this.typeRepo = typeRepo;
-        this.categoryRepo = categoryRepo;
+    // MUST be this exact order
+    public ActivityTypeService(ActivityTypeRepository typeRepository,
+                               ActivityCategoryRepository categoryRepository) {
+        this.typeRepository = typeRepository;
+        this.categoryRepository = categoryRepository;
     }
 
-    public ActivityType create(ActivityType type) {
-        ActivityCategory category = categoryRepo.findById(
-                type.getCategory().getId()
-        ).orElseThrow(() -> new RuntimeException("Category not found"));
+    public ActivityType createType(Long categoryId, ActivityType type) {
+
+        ActivityCategory category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
         type.setCategory(category);
-        return typeRepo.save(type);
+        return typeRepository.save(type);
     }
 
-    public List<ActivityType> getAll() {
-        return typeRepo.findAll();
+    public ActivityType getType(Long id) {
+        return typeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Emission factor not found"));
+    }
+
+    public List<ActivityType> getTypesByCategory(Long categoryId) {
+        return typeRepository.findByCategory_Id(categoryId);
     }
 }
