@@ -1,26 +1,28 @@
 package com.example.demo.controller;
 
 import org.springframework.web.bind.annotation.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.authentication.*;
+import org.springframework.security.core.Authentication;
+
 import com.example.demo.dto.*;
 import com.example.demo.entity.User;
-import com.example.demo.service.UserService;
 import com.example.demo.security.JwtUtil;
+import com.example.demo.service.UserService;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final UserService userService;
+    private final AuthenticationManager authManager;
     private final JwtUtil jwtUtil;
-    private final PasswordEncoder encoder;
+    private final UserService userService;
 
-    public AuthController(UserService userService,
+    public AuthController(AuthenticationManager authManager,
                           JwtUtil jwtUtil,
-                          PasswordEncoder encoder) {
-        this.userService = userService;
+                          UserService userService) {
+        this.authManager = authManager;
         this.jwtUtil = jwtUtil;
-        this.encoder = encoder;
+        this.userService = userService;
     }
 
     @PostMapping("/register")
@@ -34,14 +36,18 @@ public class AuthController {
 
     @PostMapping("/login")
     public JwtResponse login(@RequestBody LoginRequest req) {
+
+        Authentication authentication = authManager.authenticate(
+            new UsernamePasswordAuthenticationToken(
+                req.email,
+                req.password
+            )
+        );
+
         User user = userService.getAllUsers().stream()
                 .filter(u -> u.getEmail().equals(req.email))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        if (!encoder.matches(req.password, user.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
-        }
+                .get();
 
         String token = jwtUtil.generateToken(user);
         return new JwtResponse(token);
