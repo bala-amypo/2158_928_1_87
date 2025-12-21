@@ -49,16 +49,16 @@ public class AuthController {
 
     // ---------------- LOGIN ----------------
     @PostMapping("/login")
-    public JwtResponse login(@RequestBody LoginRequest request) {
+public JwtResponse login(@RequestBody LoginRequest request) {
 
-        User user = userService.getByEmail(request.email);
+    User user = userService.getByEmail(request.email);
 
-        // IMPORTANT: password check
-        if (!passwordEncoder.matches(request.password, user.getPassword())) {
-            throw new ValidationException("Invalid credentials");
-        }
-
-        String token = jwtUtil.generateToken(user);
-        return new JwtResponse(token);
+    if (!passwordEncoder.matches(request.password, user.getPassword())) {
+        throw new ValidationException("Invalid credentials");
     }
+
+    String token = jwtUtil.generateToken(user);
+    return new JwtResponse(token);
+}
+
 }
