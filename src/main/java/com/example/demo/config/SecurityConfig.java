@@ -23,23 +23,34 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
+            // Disable CSRF for REST APIs
             .csrf(csrf -> csrf.disable())
+
+            // Authorization rules
             .authorizeHttpRequests(auth -> auth
+                // Public endpoints
                 .requestMatchers(
                     "/auth/**",
                     "/swagger-ui/**",
                     "/swagger-ui.html",
                     "/v3/api-docs/**"
                 ).permitAll()
+
+                // Secured endpoints
                 .requestMatchers("/api/**").authenticated()
             )
-            .addFilterBefore(jwtFilter,
-                UsernamePasswordAuthenticationFilter.class);
 
-        //  THIS LINE IS MANDATORY
+            // Add JWT filter BEFORE username/password filter
+            .addFilterBefore(
+                jwtFilter,
+                UsernamePasswordAuthenticationFilter.class
+            );
+
+        // THIS LINE IS MANDATORY
         return http.build();
     }
 
+    // Password encoder bean
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
