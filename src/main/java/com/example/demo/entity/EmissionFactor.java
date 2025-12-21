@@ -1,9 +1,13 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class EmissionFactor {
 
     @Id
@@ -14,13 +18,13 @@ public class EmissionFactor {
     private ActivityType activityType;
 
     private Double factorValue;
+
     private String unit;
+
     private LocalDateTime createdAt;
 
     @PrePersist
     void prePersist() {
         createdAt = LocalDateTime.now();
     }
-
-    // getters and setters
 }

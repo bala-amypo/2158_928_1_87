@@ -1,10 +1,16 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = "typeName"))
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(
+    uniqueConstraints = @UniqueConstraint(columnNames = "typeName")
+)
 public class ActivityType {
 
     @Id
@@ -12,6 +18,7 @@ public class ActivityType {
     private Long id;
 
     private String typeName;
+
     private String unit;
 
     @ManyToOne(optional = false)
@@ -23,6 +30,4 @@ public class ActivityType {
     void prePersist() {
         createdAt = LocalDateTime.now();
     }
-
-    // getters and setters
 }
