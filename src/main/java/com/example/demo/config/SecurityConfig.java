@@ -15,10 +15,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-            // Disable CSRF (needed for REST APIs)
             .csrf(AbstractHttpConfigurer::disable)
-
-            // Allow ALL requests (IMPORTANT to fix 403 on login)
             .authorizeHttpRequests(auth -> auth
                 .anyRequest().permitAll()
             );
@@ -26,7 +23,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // Password encoder (needed for login)
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
