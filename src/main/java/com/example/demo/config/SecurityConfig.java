@@ -33,6 +33,15 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
                 "/v3/api-docs/**",
                 "/swagger-ui.html"
             ).permitAll()
+        .authorizeHttpRequests(auth -> auth
+    .requestMatchers(
+        "/users",
+        "/v3/api-docs/**",
+        "/swagger-ui/**",
+        "/swagger-ui.html"
+    ).permitAll()
+    .anyRequest().authenticated()
+)
 
             // ✅ Allow user creation
             .requestMatchers("/users").permitAll()
