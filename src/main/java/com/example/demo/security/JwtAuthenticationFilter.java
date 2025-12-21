@@ -35,7 +35,7 @@ public class JwtAuthenticationFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         String path = req.getServletPath();
 
-        // 🔴 SKIP JWT FILTER FOR PUBLIC ENDPOINTS
+        //  SKIP JWT FILTER FOR PUBLIC ENDPOINTS
         if (path.startsWith("/auth/")
                 || path.startsWith("/swagger-ui")
                 || path.startsWith("/v3/api-docs")) {
