@@ -12,6 +12,9 @@ import java.time.LocalDate;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
+
+
 // @RestController
 
 // @RequestMapping("/logs")
