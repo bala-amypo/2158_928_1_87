@@ -1,6 +1,7 @@
 package com.example.demo.security;
 
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,41 +22,33 @@ public class SecurityConfig {
         this.entryPoint = entryPoint;
     }
 
-   @Bean
-public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-    http
-        .csrf(csrf -> csrf.disable())
-        .authorizeHttpRequests(auth -> auth
-            // ✅ Allow Swagger
-            .requestMatchers(
-                "/swagger-ui/**",
-                "/v3/api-docs/**",
-                "/swagger-ui.html"
-            ).permitAll()
-        .authorizeHttpRequests(auth -> auth
-    .requestMatchers(
-        "/users",
-        "/v3/api-docs/**",
-        "/swagger-ui/**",
-        "/swagger-ui.html"
-    ).permitAll()
-    .anyRequest().authenticated()
-)
+        http
+            .csrf(csrf -> csrf.disable())
+            .exceptionHandling(ex -> ex.authenticationEntryPoint(entryPoint))
+            .authorizeHttpRequests(auth -> auth
 
-            // ✅ Allow user creation
-            .requestMatchers("/users").permitAll()
+                // ✅ Swagger allowed
+                .requestMatchers(
+                    "/swagger-ui/**",
+                    "/v3/api-docs/**",
+                    "/swagger-ui.html"
+                ).permitAll()
 
-            // 🔒 Everything else secured
-            .anyRequest().authenticated()
-        );
+                // ✅ User creation allowed
+                .requestMatchers("/users").permitAll()
 
-    http.addFilterBefore(jwtFilter,
-            UsernamePasswordAuthenticationFilter.class);
+                // 🔒 Everything else needs token
+                .anyRequest().authenticated()
+            );
 
-    return http.build();
-}
+        // JWT filter
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
+        return http.build();
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
