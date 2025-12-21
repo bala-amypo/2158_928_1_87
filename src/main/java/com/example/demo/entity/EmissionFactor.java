@@ -14,9 +14,7 @@ public class EmissionFactor {
     private ActivityType activityType;
 
     private Double factorValue;
-
     private String unit;
-
     private LocalDateTime createdAt;
 
     @PrePersist

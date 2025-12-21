@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(
-    uniqueConstraints = @UniqueConstraint(columnNames = "typeName")
-)
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "typeName"))
 public class ActivityType {
 
     @Id
@@ -14,7 +12,6 @@ public class ActivityType {
     private Long id;
 
     private String typeName;
-
     private String unit;
 
     @ManyToOne(optional = false)

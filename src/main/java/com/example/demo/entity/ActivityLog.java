@@ -18,11 +18,8 @@ public class ActivityLog {
     private User user;
 
     private Double quantity;
-
     private LocalDate activityDate;
-
     private Double estimatedEmission;
-
     private LocalDateTime loggedAt;
 
     @PrePersist

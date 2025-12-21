@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(
-    uniqueConstraints = @UniqueConstraint(columnNames = "categoryName")
-)
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "categoryName"))
 public class ActivityCategory {
 
     @Id
@@ -14,9 +12,7 @@ public class ActivityCategory {
     private Long id;
 
     private String categoryName;
-
     private String description;
-
     private LocalDateTime createdAt;
 
     @PrePersist
