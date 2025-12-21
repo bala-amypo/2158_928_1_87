@@ -6,7 +6,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.JwtResponse;
 import com.example.demo.entity.User;
-import com.example.demo.exception.ValidationException;
 import com.example.demo.security.JwtUtil;
 import com.example.demo.service.UserService;
 
@@ -35,16 +34,20 @@ public class AuthController {
     @PostMapping("/login")
     public JwtResponse login(@RequestBody LoginRequest request) {
 
-        User user = userService.getByEmail(request.email);
+        // STEP 1: get user safely
+        User user = userService.getByEmail(request.getEmail());
 
         if (user == null) {
-            throw new ValidationException("User not found");
+            //  user not found → return clean error, NOT 500
+            throw new RuntimeException("Invalid email or password");
         }
 
-        if (!passwordEncoder.matches(request.password, user.getPassword())) {
-            throw new ValidationException("Invalid credentials");
+        //  STEP 2: password check
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid email or password");
         }
 
+        // STEP 3: generate token
         String token = jwtUtil.generateToken(user);
         return new JwtResponse(token);
     }
