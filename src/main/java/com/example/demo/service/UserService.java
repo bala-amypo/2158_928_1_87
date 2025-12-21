@@ -1,57 +1,59 @@
-package com.example.demo.service;
 
-import com.example.demo.entity.User;
 
-import com.example.demo.exception.*;
+// package com.example.demo.service;
 
-import com.example.demo.repository.UserRepository;
+// import com.example.demo.entity.User;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
+// import com.example.demo.exception.*;
 
-import java.util.*;
-import org.springframework.stereotype.Service;
+// import com.example.demo.repository.UserRepository;
 
-@Service
+// import org.springframework.security.crypto.password.PasswordEncoder;
 
-public class UserService {
+// import java.util.*;
+// import org.springframework.stereotype.Service;
 
-    private final UserRepository repo;
+// @Service
 
-    private final PasswordEncoder encoder;
+// public class UserService {
 
-    public UserService(UserRepository repo, PasswordEncoder encoder) {
+//     private final UserRepository repo;
 
-        this.repo = repo;
+//     private final PasswordEncoder encoder;
 
-        this.encoder = encoder;
+//     public UserService(UserRepository repo, PasswordEncoder encoder) {
 
-    }
+//         this.repo = repo;
 
-    public User registerUser(User user) {
+//         this.encoder = encoder;
 
-        if (repo.findByEmail(user.getEmail()).isPresent())
+//     }
 
-        throw new ValidationException("Email already in use");
+//     public User registerUser(User user) {
 
-        user.setPassword(encoder.encode(user.getPassword()));
+//         if (repo.findByEmail(user.getEmail()).isPresent())
 
-        return repo.save(user);
+//         throw new ValidationException("Email already in use");
 
-    }
+//         user.setPassword(encoder.encode(user.getPassword()));
 
-    public User getUser(Long id) {
+//         return repo.save(user);
 
-        return repo.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+//     }
 
-    }
+//     public User getUser(Long id) {
 
-    public List<User> getAllUsers() { return repo.findAll(); }
+//         return repo.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-    public User getByEmail(String email) {
+//     }
 
-        return repo.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+//     public List<User> getAllUsers() { return repo.findAll(); }
 
-    }
+//     public User getByEmail(String email) {
 
-}
+//         return repo.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+//     }
+
+// }
 
