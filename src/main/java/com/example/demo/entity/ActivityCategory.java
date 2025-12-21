@@ -38,7 +38,7 @@
 //     public void setCategoryName(String categoryName) {
 //         this.categoryName = categoryName;
 //     }
-// }
+//}
 
 package com.example.demo.entity;
 

@@ -33,7 +33,7 @@ import java.time.LocalDateTime;
 //     public void setPassword(String password) { this.password = password; }
 
 //     public String getRole() { return role; }
-// }
+//}
 
 @Entity
 public class User {

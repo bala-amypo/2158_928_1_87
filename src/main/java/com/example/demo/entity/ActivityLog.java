@@ -55,7 +55,7 @@ import java.time.LocalDate;
 //     public void setActivityType(ActivityType activityType) {
 //         this.activityType = activityType;
 //     }
-// }
+//}
 
 @Entity
 public class ActivityLog {

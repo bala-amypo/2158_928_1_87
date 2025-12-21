@@ -35,7 +35,7 @@ import jakarta.persistence.*;
 //     public void setActivityType(ActivityType activityType) {
 //         this.activityType = activityType;
 //     }
-// }
+//}
 
 @Entity
 public class EmissionFactor {

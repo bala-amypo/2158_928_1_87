@@ -23,7 +23,7 @@ import jakarta.persistence.*;
 
 //     public ActivityCategory getCategory() { return category; }
 //     public void setCategory(ActivityCategory category) { this.category = category; }
-// }
+//}
 
 @Entity
 public class ActivityType {
