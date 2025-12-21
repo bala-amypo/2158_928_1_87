@@ -9,8 +9,7 @@ import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 
 @RestController
-@RequestMapping("/api/users")
-@Tag(name = "Users")
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService service;
@@ -25,7 +24,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User get(@PathVariable Long id) {
+    public User getOne(@PathVariable Long id) {
         return service.getUser(id);
     }
 }
