@@ -1,40 +1,38 @@
 package com.example.demo.service;
 
-import java.util.List;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import com.example.demo.entity.User;
-import com.example.demo.exception.ValidationException;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.exception.ValidationException;
+import com.example.demo.exception.ResourceNotFoundException;
+import java.util.List;
 
 @Service
 public class UserService {
 
     private final UserRepository repo;
+    private final PasswordEncoder encoder;
 
-    public UserService(UserRepository repo) {
+    public UserService(UserRepository repo, PasswordEncoder encoder) {
         this.repo = repo;
+        this.encoder = encoder;
     }
 
-    // Used in login
-    public User getByEmail(String email) {
-        return repo.findByEmail(email).orElse(null);
-    }
+    public User registerUser(User user) {
+        if (repo.existsByEmail(user.getEmail()))
+            throw new ValidationException("Email already in use");
 
-    // Used in register
-    public User save(User user) {
+        user.setPassword(encoder.encode(user.getPassword()));
         return repo.save(user);
     }
 
-    //  FIX 1: Used by UserController
-    public List<User> getAllUsers() {
-        return repo.findAll();
-    }
-
-    //  FIX 2: Used by UserController
     public User getUser(Long id) {
         return repo.findById(id)
-                .orElseThrow(() -> new ValidationException("User not found"));
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    }
+
+    public List<User> getAllUsers() {
+        return repo.findAll();
     }
 }

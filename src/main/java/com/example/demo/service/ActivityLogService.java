@@ -1,67 +1,66 @@
 package com.example.demo.service;
 
+import org.springframework.stereotype.Service;
+import com.example.demo.entity.*;
+import com.example.demo.repository.*;
+import com.example.demo.exception.*;
+
 import java.time.LocalDate;
 import java.util.List;
-
-import org.springframework.stereotype.Service;
-
-import com.example.demo.entity.*;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.exception.ValidationException;
-import com.example.demo.repository.*;
 
 @Service
 public class ActivityLogService {
 
-    private final ActivityLogRepository logRepository;
-    private final UserRepository userRepository;
-    private final ActivityTypeRepository typeRepository;
-    private final EmissionFactorRepository factorRepository;
+    private final ActivityLogRepository logRepo;
+    private final UserRepository userRepo;
+    private final ActivityTypeRepository typeRepo;
+    private final EmissionFactorRepository factorRepo;
 
-    // MUST be this exact order
-    public ActivityLogService(ActivityLogRepository logRepository,
-                              UserRepository userRepository,
-                              ActivityTypeRepository typeRepository,
-                              EmissionFactorRepository factorRepository) {
-        this.logRepository = logRepository;
-        this.userRepository = userRepository;
-        this.typeRepository = typeRepository;
-        this.factorRepository = factorRepository;
+    public ActivityLogService(ActivityLogRepository logRepo,
+                              UserRepository userRepo,
+                              ActivityTypeRepository typeRepo,
+                              EmissionFactorRepository factorRepo) {
+        this.logRepo = logRepo;
+        this.userRepo = userRepo;
+        this.typeRepo = typeRepo;
+        this.factorRepo = factorRepo;
     }
 
     public ActivityLog logActivity(Long userId, Long typeId, ActivityLog log) {
-
-        if (log.getQuantity() <= 0) {
-            throw new ValidationException("quantity must be greater than zero");
-        }
 
         if (log.getActivityDate().isAfter(LocalDate.now())) {
             throw new ValidationException("cannot be in the future");
         }
 
-        User user = userRepository.findById(userId)
+        User user = userRepo.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        ActivityType type = typeRepository.findById(typeId)
+        ActivityType type = typeRepo.findById(typeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Emission factor not found"));
 
-        EmissionFactor factor = factorRepository.findByActivityType_Id(typeId)
+        EmissionFactor factor = factorRepo.findByActivityType_Id(typeId)
                 .orElseThrow(() -> new ValidationException("No emission factor configured"));
 
         log.setUser(user);
         log.setActivityType(type);
         log.setEstimatedEmission(log.getQuantity() * factor.getFactorValue());
 
-        return logRepository.save(log);
+        return logRepo.save(log);
     }
 
     public ActivityLog getLog(Long id) {
-        return logRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Log not found"));
+        return logRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Emission factor not found"));
     }
 
-    public List<ActivityLog> getLogsByUserAndDate(
-            Long userId, LocalDate start, LocalDate end) {
-        return logRepository.findByUser_IdAndActivityDateBetween(userId, start, end);
+    public List<ActivityLog> getLogsByUser(Long userId) {
+        return logRepo.findByUser_IdAndActivityDateBetween(
+                userId, LocalDate.MIN, LocalDate.MAX);
+    }
+
+    public List<ActivityLog> getLogsByUserAndDate(Long userId,
+                                                   LocalDate start,
+                                                   LocalDate end) {
+        return logRepo.findByUser_IdAndActivityDateBetween(userId, start, end);
     }
 }

@@ -2,52 +2,47 @@ package com.example.demo.controller;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import com.example.demo.dto.LoginRequest;
-import com.example.demo.dto.JwtResponse;
+import com.example.demo.dto.*;
 import com.example.demo.entity.User;
-import com.example.demo.security.JwtUtil;
 import com.example.demo.service.UserService;
+import com.example.demo.security.JwtUtil;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private final PasswordEncoder encoder;
 
     public AuthController(UserService userService,
-                          PasswordEncoder passwordEncoder,
-                          JwtUtil jwtUtil) {
+                          JwtUtil jwtUtil,
+                          PasswordEncoder encoder) {
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
+        this.encoder = encoder;
     }
 
     @PostMapping("/register")
-    public User register(@RequestBody User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userService.save(user);
+    public User register(@RequestBody RegisterRequest req) {
+        User user = new User();
+        user.setFullName(req.name);
+        user.setEmail(req.email);
+        user.setPassword(req.password);
+        return userService.registerUser(user);
     }
 
     @PostMapping("/login")
-    public JwtResponse login(@RequestBody LoginRequest request) {
+    public JwtResponse login(@RequestBody LoginRequest req) {
+        User user = userService.getAllUsers().stream()
+                .filter(u -> u.getEmail().equals(req.email))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // STEP 1: get user safely
-        User user = userService.getByEmail(request.getEmail());
-
-        if (user == null) {
-            //  user not found → return clean error, NOT 500
-            throw new RuntimeException("Invalid email or password");
+        if (!encoder.matches(req.password, user.getPassword())) {
+            throw new RuntimeException("Invalid credentials");
         }
 
-        //  STEP 2: password check
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid email or password");
-        }
-
-        // STEP 3: generate token
         String token = jwtUtil.generateToken(user);
         return new JwtResponse(token);
     }
