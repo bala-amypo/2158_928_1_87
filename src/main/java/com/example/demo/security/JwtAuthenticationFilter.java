@@ -3,8 +3,9 @@ package com.example.demo.security;
 import java.io.IOException;
 
 import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import org.springframework.security.authentication.*;
+import jakarta.servlet.http.HttpServletRequest;
+
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -13,28 +14,50 @@ import org.springframework.stereotype.Component;
 public class JwtAuthenticationFilter extends GenericFilter {
 
     private final JwtUtil jwtUtil;
+    private final CustomUserDetailsService userDetailsService;
 
-    public JwtAuthenticationFilter(JwtUtil jwtUtil) {
+    public JwtAuthenticationFilter(JwtUtil jwtUtil,
+                                   CustomUserDetailsService userDetailsService) {
         this.jwtUtil = jwtUtil;
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
-    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+    public void doFilter(ServletRequest request,
+                         ServletResponse response,
+                         FilterChain chain)
             throws IOException, ServletException {
 
-        HttpServletRequest request = (HttpServletRequest) req;
-        String authHeader = request.getHeader("Authorization");
+        HttpServletRequest req = (HttpServletRequest) request;
+        String header = req.getHeader("Authorization");
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String token = authHeader.substring(7);
+        if (header != null && header.startsWith("Bearer ")) {
+
+            String token = header.substring(7);
             String username = jwtUtil.extractUsername(token);
 
-            UsernamePasswordAuthenticationToken auth =
-                    new UsernamePasswordAuthenticationToken(username, null, null);
+            if (username != null &&
+                SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(auth);
+                var userDetails =
+                        userDetailsService.loadUserByUsername(username);
+
+                UsernamePasswordAuthenticationToken auth =
+                        new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                null,
+                                userDetails.getAuthorities()
+                        );
+
+                auth.setDetails(
+                        new WebAuthenticationDetailsSource()
+                                .buildDetails(req));
+
+                SecurityContextHolder.getContext()
+                        .setAuthentication(auth);
+            }
         }
-        chain.doFilter(req, res);
+
+        chain.doFilter(request, response);
     }
 }
