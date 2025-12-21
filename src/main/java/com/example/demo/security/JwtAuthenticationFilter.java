@@ -33,6 +33,17 @@ public class JwtAuthenticationFilter implements Filter {
             throws IOException, ServletException {
 
         HttpServletRequest req = (HttpServletRequest) request;
+        String path = req.getServletPath();
+
+        // 🔴 SKIP JWT FILTER FOR PUBLIC ENDPOINTS
+        if (path.startsWith("/auth/")
+                || path.startsWith("/swagger-ui")
+                || path.startsWith("/v3/api-docs")) {
+
+            chain.doFilter(request, response);
+            return;
+        }
+
         String header = req.getHeader("Authorization");
 
         if (header != null && header.startsWith("Bearer ")) {
