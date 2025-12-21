@@ -10,21 +10,19 @@ public class EmissionFactor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(optional = false)
     private ActivityType activityType;
 
     private Double factorValue;
+
     private String unit;
+
     private LocalDateTime createdAt;
 
     @PrePersist
-    public void onCreate() {
+    void prePersist() {
         createdAt = LocalDateTime.now();
     }
 
-    public Long getId() { return id; }
-    public ActivityType getActivityType() { return activityType; }
-    public void setActivityType(ActivityType activityType) { this.activityType = activityType; }
-    public Double getFactorValue() { return factorValue; }
-    public void setFactorValue(Double factorValue) { this.factorValue = factorValue; }
+    // getters and setters
 }

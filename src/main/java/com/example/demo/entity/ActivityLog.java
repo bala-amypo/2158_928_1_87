@@ -11,27 +11,24 @@ public class ActivityLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private ActivityType activityType;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private User user;
 
     private Double quantity;
+
     private LocalDate activityDate;
+
     private Double estimatedEmission;
+
     private LocalDateTime loggedAt;
 
     @PrePersist
-    public void onCreate() {
+    void prePersist() {
         loggedAt = LocalDateTime.now();
     }
 
-    public void setActivityType(ActivityType activityType) { this.activityType = activityType; }
-    public void setUser(User user) { this.user = user; }
-    public void setQuantity(Double quantity) { this.quantity = quantity; }
-    public void setActivityDate(LocalDate activityDate) { this.activityDate = activityDate; }
-    public Double getQuantity() { return quantity; }
-    public LocalDate getActivityDate() { return activityDate; }
-    public void setEstimatedEmission(Double estimatedEmission) { this.estimatedEmission = estimatedEmission; }
+    // getters and setters
 }
