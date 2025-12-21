@@ -1,7 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Entity
 public class EmissionFactor {
@@ -10,35 +10,21 @@ public class EmissionFactor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "Factor value is required")
-    private Double factorValue;
-
-    @ManyToOne
+    @OneToOne
     private ActivityType activityType;
 
-    // ===== getters & setters =====
+    private Double factorValue;
+    private String unit;
+    private LocalDateTime createdAt;
 
-    public Long getId() {
-        return id;
+    @PrePersist
+    public void onCreate() {
+        createdAt = LocalDateTime.now();
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Double getFactorValue() {
-        return factorValue;
-    }
-
-    public void setFactorValue(Double factorValue) {
-        this.factorValue = factorValue;
-    }
-
-    public ActivityType getActivityType() {
-        return activityType;
-    }
-
-    public void setActivityType(ActivityType activityType) {
-        this.activityType = activityType;
-    }
+    public Long getId() { return id; }
+    public ActivityType getActivityType() { return activityType; }
+    public void setActivityType(ActivityType activityType) { this.activityType = activityType; }
+    public Double getFactorValue() { return factorValue; }
+    public void setFactorValue(Double factorValue) { this.factorValue = factorValue; }
 }

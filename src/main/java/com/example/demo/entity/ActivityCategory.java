@@ -1,7 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 @Entity
 public class ActivityCategory {
@@ -10,24 +10,20 @@ public class ActivityCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Category name must not be empty")
+    @Column(unique = true)
     private String categoryName;
 
-    // ===== getters & setters =====
+    private String description;
+    private LocalDateTime createdAt;
 
-    public Long getId() {
-        return id;
+    @PrePersist
+    public void onCreate() {
+        createdAt = LocalDateTime.now();
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
+    public Long getId() { return id; }
+    public String getCategoryName() { return categoryName; }
+    public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 }

@@ -1,8 +1,8 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class ActivityLog {
@@ -11,66 +11,27 @@ public class ActivityLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    private Double quantity;
-
-    private Double estimatedEmission;
-
-    private LocalDate activityDate;
+    @ManyToOne
+    private ActivityType activityType;
 
     @ManyToOne
     private User user;
 
-    @ManyToOne
-    private ActivityType activityType;
+    private Double quantity;
+    private LocalDate activityDate;
+    private Double estimatedEmission;
+    private LocalDateTime loggedAt;
 
-    // ===== getters & setters =====
-
-    public Long getId() {
-        return id;
+    @PrePersist
+    public void onCreate() {
+        loggedAt = LocalDateTime.now();
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Double getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Double quantity) {
-        this.quantity = quantity;
-    }
-
-    public Double getEstimatedEmission() {
-        return estimatedEmission;
-    }
-
-    public void setEstimatedEmission(Double estimatedEmission) {
-        this.estimatedEmission = estimatedEmission;
-    }
-
-    public LocalDate getActivityDate() {
-        return activityDate;
-    }
-
-    public void setActivityDate(LocalDate activityDate) {
-        this.activityDate = activityDate;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public ActivityType getActivityType() {
-        return activityType;
-    }
-
-    public void setActivityType(ActivityType activityType) {
-        this.activityType = activityType;
-    }
+    public void setActivityType(ActivityType activityType) { this.activityType = activityType; }
+    public void setUser(User user) { this.user = user; }
+    public void setQuantity(Double quantity) { this.quantity = quantity; }
+    public void setActivityDate(LocalDate activityDate) { this.activityDate = activityDate; }
+    public Double getQuantity() { return quantity; }
+    public LocalDate getActivityDate() { return activityDate; }
+    public void setEstimatedEmission(Double estimatedEmission) { this.estimatedEmission = estimatedEmission; }
 }
