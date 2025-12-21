@@ -1,12 +1,16 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
+import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
-import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
+@Tag(name = "Users")
 public class UserController {
 
     private final UserService service;
@@ -15,8 +19,13 @@ public class UserController {
         this.service = service;
     }
 
-    @PostMapping
-    public User register(@Valid @RequestBody User user) {
-        return service.registerUser(user); //  MATCHES NOW
+    @GetMapping
+    public List<User> getAll() {
+        return service.getAllUsers();
+    }
+
+    @GetMapping("/{id}")
+    public User get(@PathVariable Long id) {
+        return service.getUser(id);
     }
 }

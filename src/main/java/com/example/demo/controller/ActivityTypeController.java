@@ -1,59 +1,16 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.ActivityType;
-
-import com.example.demo.service.ActivityTypeService;
-
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
-import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
-// @RestController
-
-// @RequestMapping("/types")
-
-// public class ActivityTypeController {
-
-//     private final ActivityTypeService service;
-
-//     public ActivityTypeController(ActivityTypeService service) {
-
-//         this.service = service;
-
-//     }
-
-//     @PostMapping("/{categoryId}")
-
-//     public ActivityType create(@PathVariable Long categoryId,
-    
-//     @RequestBody ActivityType type) {
-
-//         return service.createType(categoryId, type);
-
-//     }
-
-//     @GetMapping("/{id}")
-
-//     public ActivityType get(@PathVariable Long id) {
-
-//         return service.getType(id);
-
-//     }
-
-//     @GetMapping("/category/{id}")
-
-//     public List<ActivityType> getByCategory(@PathVariable Long id) {
-
-//         return service.getTypesByCategory(id);
-
-//     }
-
-// }
+import com.example.demo.entity.ActivityType;
+import com.example.demo.service.ActivityTypeService;
 
 @RestController
-@RequestMapping("/types")
+@RequestMapping("/api/types")
+@Tag(name = "Activity Types")
 public class ActivityTypeController {
 
     private final ActivityTypeService service;
@@ -62,8 +19,19 @@ public class ActivityTypeController {
         this.service = service;
     }
 
-    @PostMapping
-    public ActivityType create(@Valid @RequestBody ActivityType type) {
-        return service.create(type);
+    @PostMapping("/category/{categoryId}")
+    public ActivityType create(@PathVariable Long categoryId,
+                               @RequestBody ActivityType type) {
+        return service.createType(categoryId, type);
+    }
+
+    @GetMapping("/category/{categoryId}")
+    public List<ActivityType> listByCategory(@PathVariable Long categoryId) {
+        return service.getTypesByCategory(categoryId);
+    }
+
+    @GetMapping("/{id}")
+    public ActivityType get(@PathVariable Long id) {
+        return service.getType(id);
     }
 }
