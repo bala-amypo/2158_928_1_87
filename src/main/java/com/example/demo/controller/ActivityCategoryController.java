@@ -1,3 +1,11 @@
+package com.example.demo.controller;
+
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+import com.example.demo.entity.ActivityCategory;
+import com.example.demo.service.ActivityCategoryService;
+
 @RestController
 @RequestMapping("/api/categories")
 public class ActivityCategoryController {
