@@ -1,7 +1,10 @@
 package com.example.demo.dto;
+
+import lombok.Data;
 import java.time.LocalDate;
 
+@Data
 public class ActivityLogRequest {
-    public Double quantity;
-    public LocalDate activityDate;
+    private Double quantity;
+    private LocalDate activityDate;
 }
