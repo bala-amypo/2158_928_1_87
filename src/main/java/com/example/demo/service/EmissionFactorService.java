@@ -1,45 +1,28 @@
 package com.example.demo.service;
 
-import org.springframework.stereotype.Service;
-import com.example.demo.entity.EmissionFactor;
 import com.example.demo.entity.ActivityType;
-import com.example.demo.repository.EmissionFactorRepository;
-import com.example.demo.repository.ActivityTypeRepository;
+import com.example.demo.entity.EmissionFactor;
 import com.example.demo.exception.ResourceNotFoundException;
-
-import java.util.List;
+import com.example.demo.repository.ActivityTypeRepository;
+import com.example.demo.repository.EmissionFactorRepository;
+import org.springframework.stereotype.Service;
 
 @Service
 public class EmissionFactorService {
 
-    private final EmissionFactorRepository factorRepo;
+    private final EmissionFactorRepository repo;
     private final ActivityTypeRepository typeRepo;
 
-    public EmissionFactorService(EmissionFactorRepository factorRepo,
-                                 ActivityTypeRepository typeRepo) {
-        this.factorRepo = factorRepo;
-        this.typeRepo = typeRepo;
+    public EmissionFactorService(EmissionFactorRepository r, ActivityTypeRepository t) {
+        this.repo = r;
+        this.typeRepo = t;
     }
 
-    public EmissionFactor createFactor(Long typeId, EmissionFactor factor) {
+    public EmissionFactor create(Long typeId, EmissionFactor factor) {
         ActivityType type = typeRepo.findById(typeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Emission factor not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Activity type not found"));
 
         factor.setActivityType(type);
-        return factorRepo.save(factor);
-    }
-
-    public EmissionFactor getFactor(Long id) {
-        return factorRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Emission factor not found"));
-    }
-
-    public EmissionFactor getFactorByType(Long typeId) {
-        return factorRepo.findByActivityType_Id(typeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Emission factor not found"));
-    }
-
-    public List<EmissionFactor> getAllFactors() {
-        return factorRepo.findAll();
+        return repo.save(factor);
     }
 }

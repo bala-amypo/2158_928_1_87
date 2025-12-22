@@ -1,66 +1,44 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.ActivityLogRequest;
+import com.example.demo.entity.ActivityLog;
+import com.example.demo.entity.ActivityType;
+import com.example.demo.entity.EmissionFactor;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.repository.ActivityLogRepository;
+import com.example.demo.repository.ActivityTypeRepository;
+import com.example.demo.repository.EmissionFactorRepository;
 import org.springframework.stereotype.Service;
-import com.example.demo.entity.*;
-import com.example.demo.repository.*;
-import com.example.demo.exception.*;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Service
 public class ActivityLogService {
 
     private final ActivityLogRepository logRepo;
-    private final UserRepository userRepo;
     private final ActivityTypeRepository typeRepo;
     private final EmissionFactorRepository factorRepo;
 
-    public ActivityLogService(ActivityLogRepository logRepo,
-                              UserRepository userRepo,
-                              ActivityTypeRepository typeRepo,
-                              EmissionFactorRepository factorRepo) {
-        this.logRepo = logRepo;
-        this.userRepo = userRepo;
-        this.typeRepo = typeRepo;
-        this.factorRepo = factorRepo;
+    public ActivityLogService(ActivityLogRepository l,
+                              ActivityTypeRepository t,
+                              EmissionFactorRepository f) {
+        this.logRepo = l;
+        this.typeRepo = t;
+        this.factorRepo = f;
     }
 
-    public ActivityLog logActivity(Long userId, Long typeId, ActivityLog log) {
-
-        if (log.getActivityDate().isAfter(LocalDate.now())) {
-            throw new ValidationException("cannot be in the future");
-        }
-
-        User user = userRepo.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    public ActivityLog logActivity(Long typeId, ActivityLogRequest request) {
 
         ActivityType type = typeRepo.findById(typeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Emission factor not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Activity type not found"));
 
         EmissionFactor factor = factorRepo.findByActivityType_Id(typeId)
-                .orElseThrow(() -> new ValidationException("No emission factor configured"));
+                .orElseThrow(() -> new ResourceNotFoundException("Emission factor not found"));
 
-        log.setUser(user);
+        ActivityLog log = new ActivityLog();
         log.setActivityType(type);
-        log.setEstimatedEmission(log.getQuantity() * factor.getFactorValue());
+        log.setQuantity(request.getQuantity());
+        log.setActivityDate(request.getActivityDate());
+        log.setEstimatedEmission(request.getQuantity() * factor.getFactorValue());
 
         return logRepo.save(log);
-    }
-
-    public ActivityLog getLog(Long id) {
-        return logRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Emission factor not found"));
-    }
-
-    public List<ActivityLog> getLogsByUser(Long userId) {
-        return logRepo.findByUser_IdAndActivityDateBetween(
-                userId, LocalDate.MIN, LocalDate.MAX);
-    }
-
-    public List<ActivityLog> getLogsByUserAndDate(Long userId,
-                                                   LocalDate start,
-                                                   LocalDate end) {
-        return logRepo.findByUser_IdAndActivityDateBetween(userId, start, end);
     }
 }

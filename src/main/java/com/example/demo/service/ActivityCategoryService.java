@@ -1,39 +1,25 @@
 package com.example.demo.service;
 
-import java.util.List;
-
+import com.example.demo.entity.ActivityCategory;
+import com.example.demo.repository.ActivityCategoryRepository;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.entity.ActivityCategory;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.exception.ValidationException;
-import com.example.demo.repository.ActivityCategoryRepository;
+import java.util.List;
 
 @Service
 public class ActivityCategoryService {
 
-    private final ActivityCategoryRepository categoryRepository;
+    private final ActivityCategoryRepository repo;
 
-    // MUST be this exact constructor
-    public ActivityCategoryService(ActivityCategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
+    public ActivityCategoryService(ActivityCategoryRepository repo) {
+        this.repo = repo;
     }
 
-    public ActivityCategory createCategory(ActivityCategory category) {
-
-        if (categoryRepository.existsByCategoryName(category.getCategoryName())) {
-            throw new ValidationException("Category name must be unique");
-        }
-
-        return categoryRepository.save(category);
+    public ActivityCategory create(ActivityCategory category) {
+        return repo.save(category);
     }
 
-    public ActivityCategory getCategory(Long id) {
-        return categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
-    }
-
-    public List<ActivityCategory> getAllCategories() {
-        return categoryRepository.findAll();
+    public List<ActivityCategory> getAll() {
+        return repo.findAll();
     }
 }
