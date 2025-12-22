@@ -1,31 +1,23 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Positive;
+import lombok.Data;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-@Entity
+@Entity @Data
 public class ActivityLog {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne
+    @ManyToOne @JoinColumn(name = "type_id")
     private ActivityType activityType;
-
-    @Positive
-    private double quantity;
-
+    @ManyToOne @JoinColumn(name = "user_id")
+    private User user;
+    private Double quantity;
     private LocalDate activityDate;
+    private LocalDateTime loggedAt;
+    private Double estimatedEmission;
 
-    private double estimatedEmission;
-
-    // getters & setters
-    public void setActivityType(ActivityType activityType) { this.activityType = activityType; }
-    public void setQuantity(double quantity) { this.quantity = quantity; }
-    public double getQuantity() { return quantity; }
-    public void setActivityDate(LocalDate activityDate) { this.activityDate = activityDate; }
-    public LocalDate getActivityDate() { return activityDate; }
-    public void setEstimatedEmission(double estimatedEmission) { this.estimatedEmission = estimatedEmission; }
+    @PrePersist
+    protected void onCreate() { this.loggedAt = LocalDateTime.now(); }
 }
