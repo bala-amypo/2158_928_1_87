@@ -2,22 +2,37 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.EmissionFactor;
 import com.example.demo.service.EmissionFactorService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/factors")
+@Tag(name = "EmissionFactorController")
 public class EmissionFactorController {
+    private final EmissionFactorService factorService;
 
-    private final EmissionFactorService service;
-
-    public EmissionFactorController(EmissionFactorService service) {
-        this.service = service;
+    public EmissionFactorController(EmissionFactorService factorService) {
+        this.factorService = factorService;
     }
 
-    @PostMapping("/{typeId}")
-    public EmissionFactor create(
-            @PathVariable Long typeId,
-            @RequestBody EmissionFactor factor) {
-        return service.create(typeId, factor);
+    @PostMapping("/{activityTypeId}")
+    public EmissionFactor create(@PathVariable Long activityTypeId, @RequestBody EmissionFactor factor) {
+        return factorService.createFactor(activityTypeId, factor);
+    }
+
+    @GetMapping("/{id}")
+    public EmissionFactor get(@PathVariable Long id) {
+        return factorService.getFactor(id);
+    }
+
+    @GetMapping("/type/{activityTypeId}")
+    public EmissionFactor getByType(@PathVariable Long activityTypeId) {
+        return factorService.getFactorByType(activityTypeId);
+    }
+
+    @GetMapping("/")
+    public List<EmissionFactor> listAll() {
+        return factorService.getAllFactors();
     }
 }
