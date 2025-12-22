@@ -1,33 +1,30 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.ActivityType;
+import com.example.demo.service.ActivityTypeService;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
-import com.example.demo.entity.ActivityCategory;
-import com.example.demo.service.ActivityCategoryService;
-
 @RestController
-@RequestMapping("/api/categories")
-public class ActivityCategoryController {
+@RequestMapping("/api/types")
+public class ActivityTypeController {
 
-    private final ActivityCategoryService service;
+    private final ActivityTypeService service;
 
-    public ActivityCategoryController(ActivityCategoryService service) {
+    public ActivityTypeController(ActivityTypeService service) {
         this.service = service;
     }
 
-    @PostMapping
-    public ActivityCategory create(@RequestBody ActivityCategory c) {
-        return service.createCategory(c);
+    @PostMapping("/{categoryId}")
+    public ActivityType create(
+            @PathVariable Long categoryId,
+            @RequestBody ActivityType type) {
+        return service.create(categoryId, type);
     }
 
     @GetMapping
-    public List<ActivityCategory> all() {
-        return service.getAllCategories();
-    }
-
-    @GetMapping("/{id}")
-    public ActivityCategory get(@PathVariable Long id) {
-        return service.getCategory(id);
+    public List<ActivityType> getAll() {
+        return service.getAll();
     }
 }
