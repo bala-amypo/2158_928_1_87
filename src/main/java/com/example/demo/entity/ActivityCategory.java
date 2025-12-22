@@ -1,22 +1,18 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Table(
-    uniqueConstraints = @UniqueConstraint(columnNames = "categoryName")
-)
 public class ActivityCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
+    @Column(unique = true)
     private String categoryName;
 
     private String description;
@@ -24,7 +20,14 @@ public class ActivityCategory {
     private LocalDateTime createdAt;
 
     @PrePersist
-    void prePersist() {
+    void onCreate() {
         createdAt = LocalDateTime.now();
     }
+
+    // getters & setters
+    public Long getId() { return id; }
+    public String getCategoryName() { return categoryName; }
+    public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 }

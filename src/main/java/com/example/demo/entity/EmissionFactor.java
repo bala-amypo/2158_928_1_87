@@ -1,30 +1,23 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-import java.time.LocalDateTime;
+import jakarta.validation.constraints.Positive;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class EmissionFactor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(optional = false)
+    @OneToOne
     private ActivityType activityType;
 
-    private Double factorValue;
+    @Positive
+    private double factorValue;
 
-    private String unit;
-
-    private LocalDateTime createdAt;
-
-    @PrePersist
-    void prePersist() {
-        createdAt = LocalDateTime.now();
-    }
+    // getters & setters
+    public double getFactorValue() { return factorValue; }
+    public void setFactorValue(double factorValue) { this.factorValue = factorValue; }
+    public void setActivityType(ActivityType activityType) { this.activityType = activityType; }
 }
