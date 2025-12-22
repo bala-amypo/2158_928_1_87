@@ -6,7 +6,8 @@ import java.time.LocalDateTime;
 
 @Entity @Data
 public class User {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String fullName;
     @Column(unique = true) private String email;
