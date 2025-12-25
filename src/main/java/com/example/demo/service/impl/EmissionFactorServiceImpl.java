@@ -21,7 +21,7 @@ public class EmissionFactorServiceImpl implements EmissionFactorService {
     }
 
     @Override
-    public EmissionFactor saveFactor(Long typeId, EmissionFactor factor) {
+    public EmissionFactor createFactor(Long typeId, EmissionFactor factor) {
         ActivityType type = typeRepository.findById(typeId)
                 .orElseThrow(() -> new RuntimeException("Activity Type not found"));
         factor.setActivityType(type);
@@ -29,8 +29,8 @@ public class EmissionFactorServiceImpl implements EmissionFactorService {
     }
 
     @Override
-    public EmissionFactor getFactorByType(Long typeId) {
-        // Uses the corrected repository method name we fixed earlier
+    public EmissionFactor getFactor(Long typeId) {
+        // Uses the findByActivityTypeId method in the repository
         return factorRepository.findByActivityTypeId(typeId)
                 .orElseThrow(() -> new RuntimeException("Emission Factor not found for type: " + typeId));
     }
