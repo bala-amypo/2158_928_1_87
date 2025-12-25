@@ -5,6 +5,7 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.exception.ValidationException;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,15 +18,17 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    // @Autowired tells Spring: "Use THIS constructor to build the bean"
+    @Autowired 
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.passwordEncoder = (passwordEncoder != null) ? passwordEncoder : new BCryptPasswordEncoder();   
+        // Use the injected bean. If (rarely) it's missing, fall back to a local instance.
+        this.passwordEncoder = (passwordEncoder != null) ? passwordEncoder : new BCryptPasswordEncoder();
     }
 
-    // Auxiliary constructor for tests or when PasswordEncoder is not provided
-    public UserServiceImpl(UserRepository userRepository) {
-        this(userRepository, new BCryptPasswordEncoder());
-    }
+    // --- REMOVED THE SECOND CONSTRUCTOR ---
+    // Having a second constructor caused the ambiguity error.
+    // For tests, you can simply call: new UserServiceImpl(repo, new BCryptPasswordEncoder());
 
     @Override
     public User registerUser(User user) {
