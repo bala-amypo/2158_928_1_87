@@ -19,42 +19,42 @@
 //         }
 //}
 
-// package com.example.demo.config;
+package com.example.demo.config;
 
-// import io.swagger.v3.oas.models.Components;
-// import io.swagger.v3.oas.models.OpenAPI;
-// import io.swagger.v3.oas.models.info.Info;
-// import io.swagger.v3.oas.models.security.SecurityRequirement;
-// import io.swagger.v3.oas.models.security.SecurityScheme;
-// import io.swagger.v3.oas.models.servers.Server;
-// import org.springframework.context.annotation.Bean;
-// import org.springframework.context.annotation.Configuration;
-// import java.util.List;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import java.util.List;
 
-// @Configuration
-// public class SwaggerApiConfig{
+@Configuration
+public class SwaggerApiConfig{
 
-//     @Bean
-//     public OpenAPI customOpenAPI() {
-//         return new OpenAPI()
-//                 .info(new Info()
-//                         .title("Carbon Footprint Estimator API")
-//                         .version("1.0"))
-//                 // 1. KEEP YOUR PORTAL SERVER URL HERE
-//                 .servers(List.of(
-//                         new Server().url("https://9599.pro604cr.amypo.ai/")
-//                 ))
-//                 // 2. ADD THE SECURITY REQUIREMENT (This enables the lock icons)
-//                 .addSecurityItem(new SecurityRequirement().addList("JavaBearerAuth"))
-//                 // 3. ADD THE SECURITY SCHEME (This enables the Authorize button)
-//                 .components(new Components()
-//                         .addSecuritySchemes("JavaBearerAuth", new SecurityScheme()
-//                                 .name("JavaBearerAuth")
-//                                 .type(SecurityScheme.Type.HTTP)
-//                                 .scheme("bearer")
-//                                 .bearerFormat("JWT")));
-//     }
-//}
+    @Bean
+    public OpenAPI customOpenAPI() {
+        return new OpenAPI()
+                .info(new Info()
+                        .title("Carbon Footprint Estimator API")
+                        .version("1.0"))
+                // 1. KEEP YOUR PORTAL SERVER URL HERE
+                .servers(List.of(
+                        new Server().url("https://9599.pro604cr.amypo.ai/")
+                ))
+                // 2. ADD THE SECURITY REQUIREMENT (This enables the lock icons)
+                .addSecurityItem(new SecurityRequirement().addList("JavaBearerAuth"))
+                // 3. ADD THE SECURITY SCHEME (This enables the Authorize button)
+                .components(new Components()
+                        .addSecuritySchemes("JavaBearerAuth", new SecurityScheme()
+                                .name("JavaBearerAuth")
+                                .type(SecurityScheme.Type.HTTP)
+                                .scheme("bearer")
+                                .bearerFormat("JWT")));
+    }
+}
 
 // package com.example.demo.config;
 
@@ -88,22 +88,22 @@
 //     }
 // }
 
-package com.example.demo.config;
+// package com.example.demo.config;
 
-import io.openapi.v3.oas.models.Components;
-import io.openapi.v3.oas.models.OpenAPI;
-import io.openapi.v3.oas.models.info.Info;
-import io.openapi.v3.oas.models.security.SecurityRequirement;
-import io.openapi.v3.oas.models.security.SecurityScheme;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+// import io.openapi.v3.oas.models.Components;
+// import io.openapi.v3.oas.models.OpenAPI;
+// import io.openapi.v3.oas.models.info.Info;
+// import io.openapi.v3.oas.models.security.SecurityRequirement;
+// import io.openapi.v3.oas.models.security.SecurityScheme;
+// import org.springframework.context.annotation.Bean;
+// import org.springframework.context.annotation.Configuration;
 
-@Configuration
-public class SwaggerApiConfig { // Or SwaggerConfig if you renamed the file
+// @Configuration
+// public class SwaggerApiConfig { // Or SwaggerConfig if you renamed the file
 
-    @Bean
-    public OpenAPI customOpenAPI() {
-        return new OpenAPI()
-                .info(new Info().title("Carbon API").version("1.0"));
-    }
-}
+//     @Bean
+//     public OpenAPI customOpenAPI() {
+//         return new OpenAPI()
+//                 .info(new Info().title("Carbon API").version("1.0"));
+//     }
+//}
