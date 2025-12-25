@@ -42,7 +42,7 @@ public class SwaggerApiConfig{
                         .version("1.0"))
                 // 1. KEEP YOUR PORTAL SERVER URL HERE
                 .servers(List.of(
-                        new Server().url("https://9599.pro604cr.amypo.ai/")
+                        new Server().url("https://9172.408procr.amypo.ai/")
                 ))
                 // 2. ADD THE SECURITY REQUIREMENT (This enables the lock icons)
                 .addSecurityItem(new SecurityRequirement().addList("JavaBearerAuth"))
