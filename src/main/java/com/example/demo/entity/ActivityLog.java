@@ -144,6 +144,68 @@
 // }
 
 
+// package com.example.demo.entity;
+
+// import jakarta.persistence.*;
+// import java.time.LocalDate;
+// import java.time.LocalDateTime;
+
+// @Entity
+// @Table(name = "activity_logs")
+// public class ActivityLog {
+//     @Id
+//     @GeneratedValue(strategy = GenerationType.IDENTITY)
+//     private Long id;
+
+//     private Double quantity;
+//     private Double estimatedEmission;
+//     private LocalDate activityDate;
+//     private LocalDateTime createdAt;
+
+//     @ManyToOne
+//     @JoinColumn(name = "user_id")
+//     private User user;
+
+//     @ManyToOne
+//     @JoinColumn(name = "type_id")
+//     private ActivityType activityType;
+
+//     public ActivityLog() {}
+
+//     // Parameterized constructor used in tests
+//     public ActivityLog(Long id, Double quantity, Double estimatedEmission, LocalDate activityDate, User user, ActivityType activityType) {
+//         this.id = id;
+//         this.quantity = quantity;
+//         this.estimatedEmission = estimatedEmission;
+//         this.activityDate = activityDate;
+//         this.user = user;
+//         this.activityType = activityType;
+//     }
+
+//     @PrePersist // Required by the Test Suite
+//     public void prePersist() {
+//         if (this.createdAt == null) {
+//             this.createdAt = LocalDateTime.now();
+//         }
+//     }
+
+//     // Standard Getters and Setters
+//     public Long getId() { return id; }
+//     public void setId(Long id) { this.id = id; }
+//     public Double getQuantity() { return quantity; }
+//     public void setQuantity(Double quantity) { this.quantity = quantity; }
+//     public Double getEstimatedEmission() { return estimatedEmission; }
+//     public void setEstimatedEmission(Double estimatedEmission) { this.estimatedEmission = estimatedEmission; }
+//     public LocalDate getActivityDate() { return activityDate; }
+//     public void setActivityDate(LocalDate activityDate) { this.activityDate = activityDate; }
+//     public User getUser() { return user; }
+//     public void setUser(User user) { this.user = user; }
+//     public ActivityType getActivityType() { return activityType; }
+//     public void setActivityType(ActivityType activityType) { this.activityType = activityType; }
+//     public LocalDateTime getCreatedAt() { return createdAt; }
+// }
+
+
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
@@ -172,35 +234,33 @@ public class ActivityLog {
 
     public ActivityLog() {}
 
-    // Parameterized constructor used in tests
-    public ActivityLog(Long id, Double quantity, Double estimatedEmission, LocalDate activityDate, User user, ActivityType activityType) {
+    // FIX: Detailed constructor used in tests
+    public ActivityLog(Long id, ActivityType activityType, User user, Double quantity, LocalDate activityDate, LocalDateTime createdAt, Double estimatedEmission) {
         this.id = id;
-        this.quantity = quantity;
-        this.estimatedEmission = estimatedEmission;
-        this.activityDate = activityDate;
-        this.user = user;
         this.activityType = activityType;
+        this.user = user;
+        this.quantity = quantity;
+        this.activityDate = activityDate;
+        this.createdAt = createdAt;
+        this.estimatedEmission = estimatedEmission;
     }
 
-    @PrePersist // Required by the Test Suite
+    // FIX: Method name required by CarbonFootprintEstimatorTest
+    public LocalDateTime getLoggedAt() {
+        return createdAt;
+    }
+
+    @PrePersist
     public void prePersist() {
         if (this.createdAt == null) {
             this.createdAt = LocalDateTime.now();
         }
     }
 
-    // Standard Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public Double getQuantity() { return quantity; }
+    // Setters for Service logic
     public void setQuantity(Double quantity) { this.quantity = quantity; }
-    public Double getEstimatedEmission() { return estimatedEmission; }
     public void setEstimatedEmission(Double estimatedEmission) { this.estimatedEmission = estimatedEmission; }
-    public LocalDate getActivityDate() { return activityDate; }
-    public void setActivityDate(LocalDate activityDate) { this.activityDate = activityDate; }
-    public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
-    public ActivityType getActivityType() { return activityType; }
     public void setActivityType(ActivityType activityType) { this.activityType = activityType; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
+    public Double getQuantity() { return quantity; }
 }
