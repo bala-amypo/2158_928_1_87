@@ -23,6 +23,7 @@
         <java.version>17</java.version>
         <jjwt.version>0.11.5</jjwt.version>
         <springdoc.version>2.3.0</springdoc.version>
+        <lombok.version>1.18.34</lombok.version>
     </properties>
 
     <dependencies>
@@ -77,6 +78,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
             <optional>true</optional>
         </dependency>
 
@@ -110,6 +112,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
                 <configuration>
                     <parameters>true</parameters>
                     <annotationProcessorPaths>
@@ -123,5 +126,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
