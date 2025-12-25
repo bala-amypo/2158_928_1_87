@@ -56,6 +56,38 @@
 //     }
 //}
 
+// package com.example.demo.config;
+
+// import io.openapi.v3.oas.models.Components;
+// import io.openapi.v3.oas.models.OpenAPI;
+// import io.openapi.v3.oas.models.info.Info;
+// import io.openapi.v3.oas.models.security.SecurityRequirement;
+// import io.openapi.v3.oas.models.security.SecurityScheme;
+// import org.springframework.context.annotation.Bean;
+// import org.springframework.context.annotation.Configuration;
+
+// @Configuration
+// public class SwaggerApiConfig {
+
+//     @Bean
+//     public OpenAPI customOpenAPI() {
+//         final String securitySchemeName = "bearerAuth";
+//         return new OpenAPI()
+//                 .info(new Info()
+//                         .title("Carbon Footprint Estimator API")
+//                         .version("1.0")
+//                         .description("API for tracking and estimating carbon emissions based on user activities."))
+//                 .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
+//                 .components(new Components()
+//                         .addSecuritySchemes(securitySchemeName,
+//                                 new SecurityScheme()
+//                                         .name(securitySchemeName)
+//                                         .type(SecurityScheme.Type.HTTP)
+//                                         .scheme("bearer")
+//                                         .bearerFormat("JWT")));
+//     }
+// }
+
 package com.example.demo.config;
 
 import io.openapi.v3.oas.models.Components;
@@ -67,23 +99,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class SwaggerApiConfig {
+public class SwaggerApiConfig { // Or SwaggerConfig if you renamed the file
 
     @Bean
     public OpenAPI customOpenAPI() {
-        final String securitySchemeName = "bearerAuth";
         return new OpenAPI()
-                .info(new Info()
-                        .title("Carbon Footprint Estimator API")
-                        .version("1.0")
-                        .description("API for tracking and estimating carbon emissions based on user activities."))
-                .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
-                .components(new Components()
-                        .addSecuritySchemes(securitySchemeName,
-                                new SecurityScheme()
-                                        .name(securitySchemeName)
-                                        .type(SecurityScheme.Type.HTTP)
-                                        .scheme("bearer")
-                                        .bearerFormat("JWT")));
+                .info(new Info().title("Carbon API").version("1.0"));
     }
 }
