@@ -26,12 +26,12 @@ public class ActivityTypeServiceImpl implements ActivityTypeService {
     public ActivityType createType(Long categoryId, ActivityType type) {
         ActivityCategory category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+        type.setCategory(category);
         
-        if (type.getUnit() == null || type.getUnit().isBlank()) {
-            throw new ValidationException("Unit must be provided");
+        if (type.getUnit() == null || type.getUnit().trim().isEmpty()) {
+            throw new ValidationException("Unit is required");
         }
         
-        type.setCategory(category);
         return typeRepository.save(type);
     }
 
