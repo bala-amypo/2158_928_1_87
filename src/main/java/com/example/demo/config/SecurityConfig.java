@@ -7,7 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer; // <--- Import this
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,14 +24,14 @@ public class SecurityConfig {
         this.jwtAuthFilter = jwtAuthFilter;
     }
 
-    // --- ADD THIS BEAN ---
+    // --- THIS IS THE FIX ---
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        // This tells Spring Security to completely ignore these paths
-        // bypassing all filters (including your JWT filter).
+        // This bypasses the entire security filter chain for Swagger.
+        // It acts as a global "Allow All" for these paths.
         return (web) -> web.ignoring().requestMatchers(
-            "/v3/api-docs/**", 
             "/swagger-ui/**", 
+            "/v3/api-docs/**",
             "/swagger-ui.html"
         );
     }
@@ -41,11 +41,8 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**").permitAll()
-                // We can remove the Swagger lines here since webSecurityCustomizer handles them,
-                // but keeping them doesn't hurt.
-                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                .anyRequest().authenticated()
+                .requestMatchers("/auth/**").permitAll() // Allow auth endpoints
+                .anyRequest().authenticated() // Secure everything else
             )
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
@@ -53,7 +50,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // Make this static to avoid circular dependency issues
     @Bean
     public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -63,4 +59,4 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
-}
+}s
