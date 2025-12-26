@@ -76,12 +76,12 @@ import com.example.demo.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -90,17 +90,14 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    // Inject the fixed key from application.properties
     @Value("${jwt.secret}")
-    private String secretString;
+    private String secret;
+
+    private SecretKey getSignInKey() {
+        return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    }
 
     private final long EXPIRATION_TIME = 1000 * 60 * 60 * 10; // 10 hours
-
-    // Helper method to convert the string into a real SecretKey object
-    private SecretKey getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(secretString);
-        return Keys.hmacShaKeyFor(keyBytes);
-    }
 
     public String generateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
@@ -108,7 +105,7 @@ public class JwtUtil {
                 .subject(subject)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(getSigningKey()) // Use the fixed key here
+                .signWith(getSignInKey())
                 .compact();
     }
 
@@ -139,7 +136,7 @@ public class JwtUtil {
 
     public Jws<Claims> parseToken(String token) {
         return Jwts.parser()
-                .verifyWith(getSigningKey()) // Verify using the same fixed key
+                .verifyWith(getSignInKey())
                 .build()
                 .parseSignedClaims(token);
     }
