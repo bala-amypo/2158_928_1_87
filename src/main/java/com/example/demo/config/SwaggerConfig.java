@@ -1,6 +1,30 @@
+// package com.example.demo.config;
+
+// import io.swagger.v3.oas.models.OpenAPI;
+// import io.swagger.v3.oas.models.servers.Server;
+// import org.springframework.context.annotation.Bean;
+// import org.springframework.context.annotation.Configuration;
+// import java.util.List;
+
+// @Configuration
+// public class SwaggerConfig {
+
+//     @Bean
+//     public OpenAPI customOpenAPI() {
+//         return new OpenAPI()
+//                 // You need to change the port as per your server
+//                 .servers(List.of(
+//                         new Server().url("https://9172.408procr.amypo.ai")
+//                 ));
+//         }
+//}
+
 package com.example.demo.config;
 
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,10 +35,25 @@ public class SwaggerConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
+        final String securitySchemeName = "bearerAuth";
+
         return new OpenAPI()
-                // You need to change the port as per your server
+                // 1. Define the Security Scheme (The "Authorize" button config)
+                .components(new Components()
+                        .addSecuritySchemes(securitySchemeName,
+                                new SecurityScheme()
+                                        .name(securitySchemeName)
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT") // Optional: Remove if not JWT
+                        )
+                )
+                // 2. Add the Security Requirement globally to all endpoints
+                .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
+                
+                // 3. Your existing Server configuration
                 .servers(List.of(
                         new Server().url("https://9172.408procr.amypo.ai")
                 ));
-        }
+    }
 }
