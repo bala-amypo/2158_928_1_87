@@ -33,7 +33,7 @@ public class AuthController {
         user.setFullName(request.getName());
         user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());
-        // Role default handled in service
+      
         return ResponseEntity.ok(userService.registerUser(user));
     }
 
